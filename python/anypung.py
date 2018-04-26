@@ -2,10 +2,8 @@ import copy
 import random
 
 import matplotlib.pyplot as plt
-from matplotlib import colors
-from matplotlib import cm
 import numpy as np
-from collections import OrderedDict
+from matplotlib import colors
 
 
 class AnyPung:
@@ -13,7 +11,7 @@ class AnyPung:
     TILE_SIZE = DEFAULT_SIZE
 
     MIN_SIZE = 5
-    MAX_SIZE = 10
+    MAX_SIZE = 12
 
     MIN_NUMBER = 1
     MAX_NUMBER = 4
@@ -24,27 +22,59 @@ class AnyPung:
         self.generate_tile_size(size)
 
     def __call__(self, *args, **kwargs):
+        draw_tiles = []
 
         start_tiles = self.get_tile_data()
         self.print_log_line('START')
         self.print_tile(start_tiles)
+        draw_tiles.append(dict(title='START', tile=start_tiles))
 
-        pung_tiles = self.pung_tile_data(start_tiles)
-        self.print_log_line('PUNG')
-        self.print_tile(pung_tiles)
+        check_tiles = start_tiles
+        step = 1
+        while self.is_pungable_tiles(check_tiles):
+            pung_tiles = self.pung_tile_data(check_tiles)
+            pung_title = f"PUNG [{step}]"
+            self.print_log_line(pung_title)
+            self.print_tile(pung_tiles)
+            draw_tiles.append(dict(title=pung_title, tile=pung_tiles))
 
-        rebuild_tiles = self.rebuild_tile_data(pung_tiles)
-        self.print_log_line('REBUILD')
-        self.print_tile(rebuild_tiles)
+            rebuild_title = f"REBUILD [{step}]"
+            rebuild_tiles = self.rebuild_tile_data(pung_tiles)
+            self.print_log_line(rebuild_title)
+            self.print_tile(rebuild_tiles)
+            draw_tiles.append(dict(title=rebuild_title, tile=rebuild_tiles))
 
-        draw_tiles = [
-            dict(title='START', tile=start_tiles),
-            dict(title='PUNG', tile=pung_tiles),
-            dict(title='REBUILD', tile=rebuild_tiles),
-        ]
+            step += 1
+            check_tiles = rebuild_tiles
+
         self.show_graph(draw_tiles)
 
+    def is_pungable_tiles(self, check_tiles):
+        # row
+        for index in range(self.TILE_SIZE):
+            tile_line = ''.join([str(x) for x in check_tiles[index]])
+            for tile in list(set(tile_line)):
+                if tile == '0':
+                    continue
+
+                if tile_line.count(self.PUNG_SIZE * tile) > 0:
+                    return True
+
+        # column
+        for index in range(self.TILE_SIZE):
+            tile_line = ''.join([str(tile[index]) for tile in check_tiles])
+            for tile_index, tile in enumerate(self.check_tile_line(tile_line)):
+                if tile == '0':
+                    continue
+
+                if tile_line.count(self.PUNG_SIZE * tile) > 0:
+                    return True
+
+        return False
+
     def show_graph(self, draw_tiles):
+        if len(draw_tiles) == 0:
+            return
 
         fig, axs = plt.subplots(len(draw_tiles), 1, figsize=(self.TILE_SIZE, self.TILE_SIZE * len(draw_tiles)))
 
@@ -86,7 +116,7 @@ class AnyPung:
         for index in range(self.TILE_SIZE):
             tile_line = ''.join([str(tile[index]) for tile in pung_tiles])
             tile_line = tile_str_format.format(int(tile_line.replace('0', '') or 0))
-            for tile_index, tile in enumerate(self.check_tile_line(tile_line)):
+            for tile_index, tile in enumerate(tile_line):
                 clear_tiles[tile_index][index] = int(tile)
 
         return clear_tiles
