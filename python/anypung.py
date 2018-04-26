@@ -37,31 +37,16 @@ class AnyPung:
         self.print_log_line('REBUILD')
         self.print_tile(rebuild_tiles)
 
-        self.show_graph(start_tiles, pung_tiles, rebuild_tiles)
+        draw_tiles = [
+            dict(title='START', tile=start_tiles),
+            dict(title='PUNG', tile=pung_tiles),
+            dict(title='REBUILD', tile=rebuild_tiles),
+        ]
+        self.show_graph(draw_tiles)
 
-    def show_graph(self, start_tiles, pung_tiles, rebuild_tiles):
-        # Z = np.random.rand(self.TILE_SIZE, self.TILE_SIZE)
-        #
-        # fig, (start_ax, pung_ax, rebuild_ax) = plt.subplots(3, 1, figsize=(self.TILE_SIZE, self.TILE_SIZE * 3))
-        #
-        # start_ax.pcolor(Z, edgecolors='k', linewidths=4)
-        # start_ax.set_title('START!')
-        #
-        # pung_ax.pcolor(Z, edgecolors='k', linewidths=4)
-        # pung_ax.set_title('PUNG!')
-        #
-        # rebuild_ax.pcolor(Z, edgecolors='k', linewidths=4)
-        # rebuild_ax.set_title('REBUILD!')
-        #
-        # plt.show()
+    def show_graph(self, draw_tiles):
 
-        cmaps = OrderedDict()
-
-        start_array = np.array(start_tiles)
-        pung_array = np.array(pung_tiles)
-        rebuild_array = np.array(rebuild_tiles)
-
-        fig, (start_ax, pung_ax, rebuild_ax) = plt.subplots(3, 1, figsize=(self.TILE_SIZE, self.TILE_SIZE * 3))
+        fig, axs = plt.subplots(len(draw_tiles), 1, figsize=(self.TILE_SIZE, self.TILE_SIZE * len(draw_tiles)))
 
         color_list = [
             '#FFFFFF',
@@ -75,44 +60,21 @@ class AnyPung:
             '#95A5A6',
         ]
 
-        number_gap = self.MAX_NUMBER - self.MIN_NUMBER + 1
-        cmap_start = colors.ListedColormap(color_list[:number_gap])
-        cmap_pung = colors.ListedColormap(color_list[:number_gap + 1])
-        cmap_rebuild = colors.ListedColormap(color_list[:number_gap + 1])
+        _cmap = colors.ListedColormap(color_list)
 
-        im = start_ax.imshow(start_array, vmin=self.MIN_NUMBER, vmax=self.MAX_NUMBER, cmap=cmap_start, aspect='equal')
-        start_ax.set_title("START!")
-        start_ax.set_xticks([])
-        start_ax.set_yticks([])
-        start_ax.set_xticklabels([])
-        start_ax.set_yticklabels([])
-
-        im = pung_ax.imshow(pung_array, vmin=self.MIN_NUMBER, vmax=self.MAX_NUMBER, cmap=cmap_pung, aspect='equal')
-        pung_ax.set_title("PUNG!")
-        pung_ax.set_xticks([])
-        pung_ax.set_yticks([])
-        pung_ax.set_xticklabels([])
-        pung_ax.set_yticklabels([])
-
-        im = rebuild_ax.imshow(rebuild_array, vmin=self.MIN_NUMBER, vmax=self.MAX_NUMBER, cmap=cmap_rebuild, aspect='equal')
-        rebuild_ax.set_title("REBUILD!")
-        rebuild_ax.set_xticks([])
-        rebuild_ax.set_yticks([])
-        rebuild_ax.set_xticklabels([])
-        rebuild_ax.set_yticklabels([])
-
-        for i in range(self.TILE_SIZE):
-            for j in range(self.TILE_SIZE):
-                start_text = start_ax.text(j, i, start_array[i, j], ha="center", va="center", color="k")
-                pung_text = pung_ax.text(j, i, pung_array[i, j], ha="center", va="center", color="k")
-                rebuild_text = rebuild_ax.text(j, i, rebuild_array[i, j], ha="center", va="center", color="k")
-
-        # plt.setp(start_ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-
-        # Loop over data dimensions and create text annotations.
-        # for i in range(len(vegetables)):
-        #     for j in range(len(farmers)):
-        #         text = ax.text(j, i, harvest[i, j], ha="center", va="center", color="w")
+        for index, ax in enumerate(axs):
+            tile_data = draw_tiles[index]
+            _array = np.array(tile_data.get('tile'))
+            _title = tile_data.get('title')
+            ax.imshow(_array, vmin=0, vmax=self.MAX_NUMBER, cmap=_cmap, aspect='equal')
+            ax.set_title(_title)
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
+            for i in range(self.TILE_SIZE):
+                for j in range(self.TILE_SIZE):
+                    ax.text(j, i, _array[i, j], ha="center", va="center", color="k")
 
         fig.tight_layout()
         plt.show()
