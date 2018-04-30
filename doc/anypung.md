@@ -1,6 +1,6 @@
 ## Any Pung !!
 
-* [link](http://codingdojang.com/scode/583?answer_mode=hide)
+* [http://codingdojang.com/scode/583?answer_mode=hide](http://codingdojang.com/scode/583?answer_mode=hide)
 
 * 아래 예와 같은 5 × 5 숫자 배열을 표준입력으로 읽어들임
 * 입력형식
