@@ -1,4 +1,4 @@
-## Any Pung !!
+## GCD, LCM
 
 * [http://codingdojang.com/scode/584?answer_mode=hide](http://codingdojang.com/scode/584?answer_mode=hide)
 
