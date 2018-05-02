@@ -17,6 +17,8 @@ class AnyPung:
     MAX_NUMBER = 4
 
     PUNG_SIZE = 3
+    PUNG_TILE_NEW_NUM = True
+    SHOW_GRAPH = False
 
     def __init__(self, size=0):
         self.generate_tile_size(size)
@@ -44,10 +46,20 @@ class AnyPung:
             self.print_tile(rebuild_tiles)
             draw_tiles.append(dict(title=rebuild_title, tile=rebuild_tiles))
 
-            step += 1
-            check_tiles = rebuild_tiles
+            if self.PUNG_TILE_NEW_NUM:
+                fill_title = f"FILL [{step}]"
+                fill_tiles = self.fill_tile_data(rebuild_tiles)
+                self.print_log_line(fill_title)
+                self.print_tile(fill_tiles)
+                draw_tiles.append(dict(title=fill_title, tile=fill_tiles))
+                check_tiles = fill_tiles
+            else:
+                check_tiles = rebuild_tiles
 
-        self.show_graph(draw_tiles)
+            step += 1
+
+        if self.SHOW_GRAPH:
+            self.show_graph(draw_tiles)
 
     def is_pungable_tiles(self, check_tiles):
         # row
@@ -108,6 +120,16 @@ class AnyPung:
 
         fig.tight_layout()
         plt.show()
+
+    def fill_tile_data(self, rebuild_tiles):
+        fill_tiles = copy.deepcopy(rebuild_tiles)
+
+        for x_index in range(self.TILE_SIZE):
+            for y_index in range(self.TILE_SIZE):
+                if fill_tiles[x_index][y_index] == 0:
+                    fill_tiles[x_index][y_index] = self.random_number()
+
+        return fill_tiles
 
     def rebuild_tile_data(self, pung_tiles):
         clear_tiles = copy.deepcopy(pung_tiles)
