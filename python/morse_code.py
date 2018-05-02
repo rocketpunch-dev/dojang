@@ -1,4 +1,4 @@
-MORSE_CODE = (
+_CODE = (
     ('B', '-...'),
     ('C', '-.-.'),
     ('F', '..-.'),
@@ -27,31 +27,26 @@ MORSE_CODE = (
     ('T', '-'),
 )
 
+MORSE_CODE = dict([(x, y) for x, y in _CODE])
+MORSE_CODE_REVERSE = dict([(y, x) for x, y in _CODE])
 
-def reverse_morse_code(morse_code):
-    reversed_text = morse_code
 
-    for key, value in MORSE_CODE:
-        reversed_text = reversed_text.replace(value, key)
+def reverse_morse_code(input_code):
+    result_morse_code = list()
 
-    reversed_text = reversed_text.replace('  ', '+')
-    reversed_text = reversed_text.replace(' ', '')
-    reversed_text = reversed_text.replace('+', ' ')
+    for code in input_code.split(' '):
+        result_morse_code.append(MORSE_CODE_REVERSE.get(code) or ' ')
 
-    return reversed_text
+    return ''.join(result_morse_code)
 
 
 def make_morse_code(input_text):
-    MORSE_CODE_DICT = dict(MORSE_CODE)
-
     result_morse_code = list()
-    for text in input_text:
-        if text == ' ':
-            result_morse_code.append('*')
-        else:
-            result_morse_code.append(MORSE_CODE_DICT.get(text.upper()))
 
-    return ' '.join(result_morse_code).replace('*', '')
+    for _text in input_text:
+        result_morse_code.append(MORSE_CODE.get(_text.upper()) or '')
+
+    return ' '.join(result_morse_code)
 
 
 if __name__ == "__main__":
