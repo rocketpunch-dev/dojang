@@ -1,30 +1,30 @@
 _CODE = (
+    ('A', '.-'),
     ('B', '-...'),
     ('C', '-.-.'),
+    ('D', '-..'),
+    ('E', '.'),
     ('F', '..-.'),
+    ('G', '--.'),
     ('H', '....'),
+    ('I', '..'),
     ('J', '.---'),
+    ('K', '-.-'),
     ('L', '.-..'),
+    ('M', '--'),
+    ('N', '-.'),
+    ('O', '---'),
     ('P', '.--.'),
     ('Q', '--.-'),
+    ('R', '.-.'),
+    ('S', '...'),
+    ('T', '-'),
+    ('U', '..-'),
     ('V', '...-'),
+    ('W', '.--'),
     ('X', '-..-'),
     ('Y', '-.--'),
     ('Z', '--..'),
-    ('W', '.--'),
-    ('U', '..-'),
-    ('D', '-..'),
-    ('G', '--.'),
-    ('K', '-.-'),
-    ('O', '---'),
-    ('R', '.-.'),
-    ('S', '...'),
-    ('I', '..'),
-    ('M', '--'),
-    ('A', '.-'),
-    ('N', '-.'),
-    ('E', '.'),
-    ('T', '-'),
 )
 
 MORSE_CODE = dict([(x, y) for x, y in _CODE])
@@ -49,6 +49,14 @@ def make_morse_code(input_text):
     return ' '.join(result_morse_code)
 
 
+def min_reverse_morse_code(input_code):
+    return ''.join([MORSE_CODE_REVERSE.get(code) or ' ' for code in input_code.split(' ')])
+
+
+def min_make_morse_code(input_text):
+    return ' '.join([MORSE_CODE.get(_text.upper()) or '' for _text in input_text])
+
+
 if __name__ == "__main__":
     INPUT_DATA = '.... .  ... .-.. . . .--. ...  . .- .-. .-.. -.--'
     print(INPUT_DATA)
@@ -58,3 +66,11 @@ if __name__ == "__main__":
 
     morse_code = make_morse_code(text)
     print(morse_code)
+
+    text = min_reverse_morse_code(INPUT_DATA)
+    print(text)
+
+    morse_code = min_make_morse_code(text)
+    print(morse_code)
+
+
