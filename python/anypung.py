@@ -11,14 +11,14 @@ class AnyPung:
     TILE_SIZE = DEFAULT_SIZE
 
     MIN_SIZE = 5
-    MAX_SIZE = 12
+    MAX_SIZE = 7
 
     MIN_NUMBER = 1
     MAX_NUMBER = 4
 
     PUNG_SIZE = 3
     PUNG_TILE_NEW_NUM = True
-    SHOW_GRAPH = False
+    SHOW_GRAPH = True
 
     def __init__(self, size=0):
         self.generate_tile_size(size)
