@@ -75,7 +75,7 @@ class AnyPung:
         # column
         for index in range(self.TILE_SIZE):
             tile_line = ''.join([str(tile[index]) for tile in check_tiles])
-            for tile_index, tile in enumerate(self.check_tile_line(tile_line)):
+            for tile in list(set(tile_line)):
                 if tile == '0':
                     continue
 
@@ -199,4 +199,3 @@ class AnyPung:
 if __name__ == "__main__":
     any_pung = AnyPung()
     any_pung()
-
