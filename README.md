@@ -1,6 +1,7 @@
 ## Coding Dojang
 
-[코딩도장](http://codingdojang.com/)에서 풀고 싶은 문제를 가져와서 푸는 곳
+* [코딩도장](http://codingdojang.com/)
+* codingdojang problems to practice
 
 ## Requirements
 
